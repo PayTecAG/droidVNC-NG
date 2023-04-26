@@ -280,14 +280,15 @@ JNIEXPORT jboolean JNICALL Java_net_christianbeier_droidvnc_1ng_MainService_vncS
 
 JNIEXPORT jboolean JNICALL Java_net_christianbeier_droidvnc_1ng_MainService_vncStartServer(JNIEnv *env, jobject thiz, jint width, jint height, jint port, jstring desktopname, jstring password) {
 
-    int argc = 0;
+    int argc = 3;
+    char *argv[] = { "droidVNC-NG", "-listen", "127.0.0.1" };
 
     if(theScreen)
         return JNI_FALSE;
 
     rfbRegisterTightVNCFileTransferExtension();
 
-    theScreen=rfbGetScreen(&argc, NULL, width, height, 8, 3, 4);
+    theScreen=rfbGetScreen(&argc, argv, width, height, 8, 3, 4);
     if(!theScreen) {
         __android_log_print(ANDROID_LOG_ERROR, TAG, "vncStartServer: failed allocating rfb screen");
         return JNI_FALSE;
