@@ -160,7 +160,7 @@ public class MainService extends Service {
             Notification notification = new NotificationCompat.Builder(this, getPackageName())
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentTitle(getString(R.string.app_name))
-                    .setContentText("Doing some work...")
+                    .setContentText("Disconnected")
                     .setContentIntent(pendingIntent).build();
 
             startForeground(NOTIFICATION_ID, notification);
@@ -288,6 +288,8 @@ public class MainService extends Service {
             // instance probably null
             Log.e(TAG, "onClientConnected: wake lock acquiring failed: " + e);
         }
+
+        instance.notify("Connected");
     }
 
     public static void onClientDisconnected(long client) {
@@ -299,6 +301,8 @@ public class MainService extends Service {
             // instance probably null
             Log.e(TAG, "onClientDisconnected: wake lock releasing failed: " + e);
         }
+
+        instance.notify("Disconnected");
     }
 
     @SuppressLint("WrongConstant")
@@ -553,5 +557,21 @@ public class MainService extends Service {
         catch (NullPointerException e) {
             return false;
         }
+    }
+
+    private void notify(String text) {
+        Intent notificationIntent = new Intent(instance, MainActivity.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(instance, 0,
+                notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        Notification notification = new NotificationCompat.Builder(instance, instance.getPackageName())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(instance.getString(R.string.app_name))
+                .setContentText(text)
+                .setContentIntent(pendingIntent).build();
+
+        NotificationManager manager = instance.getSystemService(NotificationManager.class);
+        manager.notify(NOTIFICATION_ID, notification);
     }
 }
