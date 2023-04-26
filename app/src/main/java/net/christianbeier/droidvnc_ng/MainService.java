@@ -281,8 +281,7 @@ public class MainService extends Service {
         Log.d(TAG, "onClientConnected: client " + client);
 
         try {
-            // Under some circumstances, the wake lock does not seem to be released,
-            // maybe in case of unclean disconnect. Therefore, use a timeout.
+            // limit power drain if supporter forgets to disconnect
             instance.mWakeLock.acquire(15*60*1000L);
         } catch (Exception e) {
             // instance probably null
