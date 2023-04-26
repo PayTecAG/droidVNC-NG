@@ -158,7 +158,7 @@ public class MainService extends Service {
                     notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
             Notification notification = new NotificationCompat.Builder(this, getPackageName())
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.ic_blank)
                     .setContentTitle(getString(R.string.app_name))
                     .setContentText("Disconnected")
                     .setContentIntent(pendingIntent).build();
@@ -288,7 +288,7 @@ public class MainService extends Service {
             Log.e(TAG, "onClientConnected: wake lock acquiring failed: " + e);
         }
 
-        instance.notify("Connected");
+        instance.notify("Connected", true);
     }
 
     public static void onClientDisconnected(long client) {
@@ -301,7 +301,7 @@ public class MainService extends Service {
             Log.e(TAG, "onClientDisconnected: wake lock releasing failed: " + e);
         }
 
-        instance.notify("Disconnected");
+        instance.notify("Disconnected", false);
     }
 
     @SuppressLint("WrongConstant")
@@ -558,14 +558,14 @@ public class MainService extends Service {
         }
     }
 
-    private void notify(String text) {
+    private void notify(String text, Boolean showLogo) {
         Intent notificationIntent = new Intent(instance, MainActivity.class);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(instance, 0,
                 notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
         Notification notification = new NotificationCompat.Builder(instance, instance.getPackageName())
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(showLogo ? R.mipmap.ic_launcher : R.mipmap.ic_blank)
                 .setContentTitle(instance.getString(R.string.app_name))
                 .setContentText(text)
                 .setContentIntent(pendingIntent).build();
