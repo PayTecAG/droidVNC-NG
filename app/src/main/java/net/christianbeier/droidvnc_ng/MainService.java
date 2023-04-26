@@ -277,12 +277,13 @@ public class MainService extends Service {
         return START_NOT_STICKY;
     }
 
-    @SuppressLint("WakelockTimeout")
     public static void onClientConnected(long client) {
         Log.d(TAG, "onClientConnected: client " + client);
 
         try {
-            instance.mWakeLock.acquire();
+            // Under some circumstances, the wake lock does not seem to be released,
+            // maybe in case of unclean disconnect. Therefore, use a timeout.
+            instance.mWakeLock.acquire(15*60*1000L);
         } catch (Exception e) {
             // instance probably null
             Log.e(TAG, "onClientConnected: wake lock acquiring failed: " + e);
