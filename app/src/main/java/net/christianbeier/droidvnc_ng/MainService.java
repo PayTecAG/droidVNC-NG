@@ -21,6 +21,8 @@
 
 package net.christianbeier.droidvnc_ng;
 
+import static net.christianbeier.droidvnc_ng.Constants.DEFAULT_PORT;
+
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -186,7 +188,7 @@ public class MainService extends Service {
 
         if (!vncStartServer(displayMetrics.widthPixels,
                 displayMetrics.heightPixels,
-                prefs.getInt(Constants.PREFS_KEY_SETTINGS_PORT, 5900),
+                prefs.getInt(Constants.PREFS_KEY_SETTINGS_PORT, DEFAULT_PORT),
                 Settings.Secure.getString(getContentResolver(), "bluetooth_name"),
                 prefs.getString(Constants.PREFS_KEY_SETTINGS_PASSWORD, "")))
             stopSelf();
@@ -491,11 +493,11 @@ public class MainService extends Service {
      */
     public static ArrayList<String> getIPv4sAndPorts() {
 
-        int port = 5900;
+        int port = DEFAULT_PORT;
 
         try {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(instance);
-            port = prefs.getInt(Constants.PREFS_KEY_SETTINGS_PORT, 5900);
+            port = prefs.getInt(Constants.PREFS_KEY_SETTINGS_PORT, DEFAULT_PORT);
         } catch (NullPointerException e) {
             //unused
         }
