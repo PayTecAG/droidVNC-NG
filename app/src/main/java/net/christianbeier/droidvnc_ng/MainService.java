@@ -144,7 +144,7 @@ public class MainService extends Service {
             NotificationChannel serviceChannel = new NotificationChannel(
                     getPackageName(),
                     "Foreground Service Channel",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    NotificationManager.IMPORTANCE_LOW
             );
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(serviceChannel);
